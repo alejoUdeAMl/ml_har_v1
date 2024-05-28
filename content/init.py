@@ -1,6 +1,17 @@
 github_repo = 'alejoUdeAMl/ml_har_v1'
 zip_file_url = 'https://github.com/alejoUdeAMl/ml_har_v1/archive/main.zip'
 
+def get_last_modif_date(localdir):
+    try:
+        import time, os, pytz
+        import datetime
+        k = datetime.datetime.fromtimestamp(max(os.path.getmtime(root) for root,_,_ in os.walk(localdir)))
+        localtz = datetime.datetime.now(datetime.timezone(datetime.timedelta(0))).astimezone().tzinfo
+        k = k.astimezone(localtz)
+        return k
+    except Exception:
+        return None
+
 def init(force_download=False):
     from IPython.display import display, HTML
     js = """
@@ -26,6 +37,10 @@ def init(force_download=False):
         elif os.path.exists(dirname+"/local"):
             shutil.move(dirname+"/local", "local")
         shutil.rmtree(dirname)
+
+def get_weblink():
+    from IPython.display import HTML
+    return HTML("<h3>See <a href='"+endpoint+"/web/login' target='_blank'>my courses and progress</a></h2>")
 
 def install_sourcedefender():
     print('enabling encryption...')
